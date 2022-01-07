@@ -1,13 +1,7 @@
 class Admin::ProductsController < ApplicationController
 
   http_basic_authenticate_with name: ENV['HTTP_BASIC_AUTH_USERNAME'], password:  ENV['HTTP_BASIC_AUTH_PASSWORD']
-  # before_filter :authenticate
-  # def authenticate
-  #   authenticate_or_request_with_http_basic('Administration') do |username, password|
-  #     username == ENV['USERNAME'] && password == ENV['PASSWORD']
-  #   end
-  # end
-
+  
 
 
   def index
