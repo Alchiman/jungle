@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
 
   before(:each) do
-    @user = User.new(name: "test name", email: 'email@gmail.com', password: 'asdasdasd', password_confirmation: 'asdasdasd')
+    @user = User.new(first_name: "test first_name", last_name:"test Last_name", email: 'email@gmail.com', password: 'asdasdasd', password_confirmation: 'asdasdasd')
   end
 
   describe 'Validations' do 
@@ -23,19 +23,24 @@ RSpec.describe User, type: :model do
       @user.save
       expect(@user).not_to be_valid
     end
-    it "should not let user be created without a name" do
-      @user.name = nil
+    it "should not let user be created without a first name" do
+      @user.first_name = nil
+      @user.save
+      expect(@user).not_to be_valid
+    end
+    it "should not let user be created without a last name" do
+      @user.last_name = nil
       @user.save
       expect(@user).not_to be_valid
     end
     it "should not let user be created without unique email" do
       @user.save
-      @user2 = User.create(name: "test name", email: 'email@gmail.com', password: 'asdasdasd', password_confirmation: 'asdasdasd')
+      @user2 = User.create(first_name: "test first_name", last_name:"test Last_name" , email: 'email@gmail.com', password: 'asdasdasd', password_confirmation: 'asdasdasd')
       expect(@user2).not_to be_valid
     end
     it "should not let user be created when the email already exists in lower case" do
       @user.save
-      @user2 = User.create(name: "test name", email: 'EMAIL@GMAIL.COM', password: 'asdasdasd')
+      @user2 = User.create(first_name: "test first_name", last_name:"test Last_name" , email: 'EMAIL@GMAIL.COM', password: 'asdasdasd')
       expect(@user2).not_to be_valid
     end
     it "should let user be created when the password length is less than 6" do
@@ -50,32 +55,32 @@ RSpec.describe User, type: :model do
   end
   describe '.authenticate_with_credentials' do
     it 'should authenticate if password and email are valid' do
-      user = User.create(name: 'an khor', email: 'ankhor@email.com', password: 'apples', password_confirmation: 'apples')
+      user = User.create(first_name: 'an', last_name: 'khor', email: 'ankhor@email.com', password: 'apples', password_confirmation: 'apples')
       valid_user = User.authenticate_with_credentials('ankhor@email.com', 'apples')
   
       expect(valid_user).to eq(user)
       end
   
       it 'should not authenticate if email does not exist' do
-        user = User.create(name: 'an khor', email: 'ankhor@email.com', password: 'apples', password_confirmation: 'apples')
+        user = User.create(first_name: 'an', last_name: 'khor', email: 'ankhor@email.com', password: 'apples', password_confirmation: 'apples')
         invalid_user = User.authenticate_with_credentials('notemail@notemail.com', 'apples')
     
         expect(invalid_user).to_not eq(user)
       end
       it 'should not authenticate if email does not exist' do
-        user = User.create(name: 'an khor', email: 'ankhor@email.com', password: 'apples', password_confirmation: 'apples')
+        user = User.create(first_name: 'an', last_name: 'khor', email: 'ankhor@email.com', password: 'apples', password_confirmation: 'apples')
         invalid_user = User.authenticate_with_credentials('ankhor@email.com', 'oranges')
         expect(invalid_user).to_not eq(user)
       end
   
       it 'should authenticate if user adds uppercase letters to their email' do
-        user = User.create(name: 'an khor', email: 'email@email.com', password: 'apples', password_confirmation: 'apples')
+        user = User.create(first_name: 'an', last_name: 'khor', email: 'email@email.com', password: 'apples', password_confirmation: 'apples')
         valid_user = User.authenticate_with_credentials('EMAIL@email.com', 'apples')
         expect(valid_user).to eq(user)
       end
   
       it 'should authenticate if user adds spaces to beginning or end of email' do
-        user = User.create(name: 'an Khor', email: 'email@email.com', password: 'oranges', password_confirmation: 'oranges')
+        user = User.create(first_name: 'an', last_name: 'Khor', email: 'email@email.com', password: 'oranges', password_confirmation: 'oranges')
         valid_user = User.authenticate_with_credentials(' email@email.com ', 'oranges')
         expect(valid_user).to eq(user)
       end

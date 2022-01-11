@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   validates :password, confirmation: true , presence: true, length: { in: 6..20 }
   validates :password_confirmation, presence: true
   validates :email, presence: true
-  validates :name, presence: true
+  validates :first_name, :last_name, presence: true
   validates :email, uniqueness: { case_sensitive: false }
 
   def self.authenticate_with_credentials(email, password)
